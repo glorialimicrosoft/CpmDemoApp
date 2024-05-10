@@ -2,56 +2,79 @@
     ViewData["Title"] = "Messages List";
 }
 
-<ul>
-    @if(Messages.MessagesListStatic!=null)
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Shop - Inquiry with Insights</title>
+    <style>
+        .message-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .message-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .message-content {
+            margin-top: 10px;
+        }
+
+        .insights-container {
+            background-color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        .insights-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .insight-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+@if (EventsReceived.EventReceivedListStatic!=null)
+{
+    @foreach (var eventReceived in EventsReceived.EventReceivedListStatic)
     {
-        @foreach (var message in Messages.MessagesListStatic)
+        @if (eventReceived.Analysis != null)
         {
-            <li>
-                @if (message.Analysis != null)
+            <div class="insights-container">
+                <div class="insights-title">Insights:</div>
+                <div class="insight-item"><strong>Language Detected:</strong> @eventReceived.Analysis.LanguageDetection.Language</div>
+                @if (eventReceived.Analysis.LanguageDetection.Language.ToLower() != "english")
                 {
-                    <div>
-                        Message analysis:
-                    </div>
-                    <div>
-                        Original Message: @message.Analysis.OriginalMessage
-                    </div>
-                    <table>
-                        <tr>
-                            <th>LanguageDetection</th>
-                            <th>Sentiment</th>
-                            <th>IntentAnalysis</th>
-                            <th>KeyphraseExtraction</th>
-                        </tr>
-                        <tr>
-                            <td>Language: @message.Analysis.LanguageDetection.Language</td>
-                            <td>Score: @message.Analysis.Sentiment.Score</td>
-                            <td>@message.Analysis.IntentAnalysis</td>
-                            <td>@(String.Join(",", message.Analysis.KeyphraseExtraction))</td>
-                        </tr>
-                        <tr>
-                            <td>ConfidenceScore: @message.Analysis.LanguageDetection.ConfidenceScore</td>
-                            <td>Description: @message.Analysis.Sentiment.Description</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Translation: @message.Analysis.LanguageDetection.Translation</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
+                    <div class="insight-item"><strong>Translation:</strong> @eventReceived.Analysis.LanguageDetection.Translation</div>
                 }
-                @if (message.Text != null)
-                {
-                    @message.Text
-                }
-                @if (message.Image != null)
-                {
-                    <img src=@message.Image style="max-width:100px;">
-                }
-            </li>
+                <div class="insight-item"><strong>Intent:</strong> @eventReceived.Analysis.IntentAnalysis</div>
+                <div class="insight-item">
+                    <strong>Keywords:</strong> @(string.Join(", ", @eventReceived.Analysis.KeyphraseExtraction.Select(keyword => keyword)))
+                </div>
+            </div>
+        }
+        @if (eventReceived.Text != null)
+        {
+            <div class="message-container">
+                <div class="message-info">
+                    <p>From: @eventReceived.Text.From</p>
+                    <p>Received Time: @eventReceived.Text.ReceivedTimeStamp</p>
+                </div>
+                <div class="message-content">
+                    @eventReceived.Text.Content
+                </div>
+            </div>
         }
     }
-</ul>
+}

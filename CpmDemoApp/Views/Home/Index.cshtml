@@ -26,57 +26,87 @@
     RefreshPartial();
 </script>
 
-<h1>Flower Shop Business Chat</h1>  
-  
-<strong>Send a Message</strong>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Shop - Inquiry with Insights</title>
+    <style>
+        body, html {
+            height: 100%; /* Make sure html and body are full height */
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
 
-<tr class="form-group">  
-    @using (Html.BeginForm("Index", "Home", FormMethod.Post))  
-    {  
-        <table>   
-            <tr>  
-                <td> @Html.Label("Phone Number: ")  </td>
-                <td> @Html.TextBox("Phone_Number") </td>  
-            </tr> 
-            
-            <tr>  
-                <td>@Html.Label("Message:")  </td>
-                <td>@Html.TextBox("Message")  </td>
-            </tr>  
+        .content-container {
+            height: calc(85vh - 60px); /* 90% of the viewport height minus the header and footer height */
+            overflow: auto;
+            padding: 20px;
+            padding-bottom: 70px;
+        }
 
-            <tr>  
-                <td>@Html.Label("Image Url:")  </td>
-                <td>@Html.TextBox("Image")  </td>
-            </tr>  
-  
-            <tr>  
-                <td>  
-                    <input type="submit" value="Send" class="btn-primary" />  
-                </td>  
-  
-            </tr> 
-        </table>  
-    }  
-</tr>
+        .button {
+            position: fixed;
+            bottom: 60px; /* Adjust to align properly above the footer */
+            width: 100%;
+            text-align: left; /* Center the form button */
+        }
 
-<br>
+        .header {
+            background-color: #3498db; /* Changed header color to blue */
+            padding: 20px;
+            text-align: right; /* Aligning the logo to the right */
+            color: #fff;
+        }
 
-<div>  
-    <strong>Chat History</strong>  
-</div>  
+        .shop-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
 
-<div style="border:dotted; height: 600px; overflow: auto">
-    <div id="partialContainer">
-        @Html.Partial("MessagesList")
+        .shop-number {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .footer {
+            background-color: #3498db; /* Footer color */
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="shop-name">Contoso Flower Shop Business Chat</div>
+        <div class="shop-number">+1(833)-595-2461</div>
     </div>
-</div>
 
-<br>
+    <div class="content-container">
+        <div id="partialContainer">
+            @Html.Partial("MessagesList")
+        </div>
+    </div>
 
-@using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
-{
-    <input type="submit" value="Clear History" class="btn-secondary" />  
-}
+    <div class="button">
+        @using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
+        {
+            <input type="submit" value="Clear History" class="btn-secondary" />
+        }
+    </div>
+
+    <div class="footer">
+        &copy; 2024 Contoso Flower Shop Business Chat. All rights reserved.
+    </div>
+</body>
+
 
 <script>
     if ( window.history.replaceState ) {
