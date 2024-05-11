@@ -27,7 +27,7 @@ namespace CpmDemoApp.Controllers
             return PartialView();
         }
 
-        public IActionResult Contact()
+        public IActionResult CustomerInsights()
         {
             return View();
         }
@@ -36,7 +36,7 @@ namespace CpmDemoApp.Controllers
         public IActionResult ClearHistory()
         {
             EventsReceived.EventReceivedListStatic = new List<EventReceived>();
-            return RedirectToAction("Index");
+            return RedirectToAction("CustomerInsights");
         }
     }
 }

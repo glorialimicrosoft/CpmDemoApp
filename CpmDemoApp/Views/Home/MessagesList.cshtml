@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flower Shop - Inquiry with Insights</title>
     <style>
-        .message-container {
+        .messagecontainer {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -16,16 +16,16 @@
             max-width: 600px;
         }
 
-        .message-info {
+        .messageinfo {
             font-size: 14px;
             color: #666;
         }
 
-        .message-content {
+        .messagecontent {
             margin-top: 10px;
         }
 
-        .insights-container {
+        .insightscontainer {
             background-color: #e0e0e0;
             padding: 20px;
             border-radius: 8px;
@@ -34,12 +34,12 @@
             margin-top: 20px;
         }
 
-        .insights-title {
+        .insightstitle {
             font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .insight-item {
+        .insightitem {
             margin-bottom: 10px;
         }
     </style>
@@ -51,27 +51,27 @@
     {
         @if (eventReceived.Analysis != null)
         {
-            <div class="insights-container">
-                <div class="insights-title">Insights:</div>
-                <div class="insight-item"><strong>Language Detected:</strong> @eventReceived.Analysis.LanguageDetection.Language</div>
+            <div class="insightscontainer">
+                <div class="insightstitle">Insights:</div>
+                <div class="insightitem"><strong>Language Detected:</strong> @eventReceived.Analysis.LanguageDetection.Language</div>
                 @if (eventReceived.Analysis.LanguageDetection.Language.ToLower() != "english")
                 {
-                    <div class="insight-item"><strong>Translation:</strong> @eventReceived.Analysis.LanguageDetection.Translation</div>
+                    <div class="insightitem"><strong>Translation:</strong> @eventReceived.Analysis.LanguageDetection.Translation</div>
                 }
-                <div class="insight-item"><strong>Intent:</strong> @eventReceived.Analysis.IntentAnalysis</div>
-                <div class="insight-item">
+                <div class="insightitem"><strong>Intent:</strong> @eventReceived.Analysis.IntentAnalysis</div>
+                <div class="insightitem">
                     <strong>Keywords:</strong> @(string.Join(", ", @eventReceived.Analysis.KeyphraseExtraction.Select(keyword => keyword)))
                 </div>
             </div>
         }
         @if (eventReceived.Text != null)
         {
-            <div class="message-container">
-                <div class="message-info">
+            <div class="messagecontainer">
+                <div class="messageinfo">
                     <p>From: @eventReceived.Text.From</p>
                     <p>Received Time: @eventReceived.Text.ReceivedTimeStamp</p>
                 </div>
-                <div class="message-content">
+                <div class="messagecontent">
                     @eventReceived.Text.Content
                 </div>
             </div>

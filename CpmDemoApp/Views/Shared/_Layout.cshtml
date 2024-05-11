@@ -19,7 +19,7 @@
         .shopname {
             display: flex;
             margin-top: 10px;
-            margin-left: 30px;
+            margin-left: 10%;
         }
 
         .logo {
@@ -27,8 +27,8 @@
             padding-right: 10px;
         }
 
-        .contactbutton {
-            margin-right: 30px;
+        .customerinsightsbutton {
+            margin-right: 10%;
             text-align: right;
             padding: 5px 10px;
             text-decoration: none;
@@ -36,7 +36,7 @@
             border: 2px solid black;
         }
 
-        .contactbuttontext {
+        .customerinsightsbuttontext {
             font-size: 16px;
             color: #000;
             font-family: Arial rounded mt;
@@ -51,17 +51,17 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="header container-fluid">
         <div class="shopname">
             <img src="~/assets/logo.png" alt="Shop Logo" class="logo">
             @Html.ActionLink("Blossom Bliss Studio", "Index", "Home", new { area = "" }, new { @class = "navbar-brand shopnametext" })
         </div>
-        <div class="contactbutton">
-            @Html.ActionLink("Contact Us", "Contact", "Home", new { area = "" }, new { @class = "nav-link contactbuttontext" })
+        <div class="customerinsightsbutton">
+            @Html.ActionLink("Customer Insights", "CustomerInsights", "Home", new { area = "" }, new { @class = "nav-link customerinsightsbuttontext" })
         </div>
     </div>
     
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
