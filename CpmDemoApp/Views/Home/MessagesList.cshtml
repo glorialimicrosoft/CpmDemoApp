@@ -49,12 +49,18 @@
             display: flex;
             justify-content: center; /* Center horizontally */
             align-items: center; /* Center vertically */
-            height: 85vh;
+            height: 70vh;
             text-align: center;
         }
 
         .emptylist h2 {
             margin: 0; /* Removes default margin from h2 to help with centering */
+        }
+
+        .button {
+            margin-left: 10%;
+            position: absolute;
+            bottom: 10px;
         }
     </style>
 </head>
@@ -91,6 +97,13 @@
             </div>
         }
     }
+
+    <div class="button">
+        @using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
+        {
+            <input type="submit" value="Clear History" class="btn-secondary" />
+        }
+    </div>
 }
 else
 {

@@ -37,15 +37,12 @@
         }
 
         .contentcontainer {
-            height: 85vh; /* 90% of the viewport height minus the header and footer height */
+            height: 90%;
             overflow: auto;
-            padding: 20px;
         }
 
-        .button {
-            margin-left: 10%;
-            position: relative;
-            bottom: 10px;
+        #partialContainer {
+            height: 100%;
         }
     </style>
 </head>
@@ -55,12 +52,5 @@
         <div id="partialContainer">
             @Html.Partial("MessagesList")
         </div>
-    </div>
-
-    <div class="button">
-        @using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
-        {
-            <input type="submit" value="Clear History" class="btn-secondary" />
-        }
     </div>
 </body>
