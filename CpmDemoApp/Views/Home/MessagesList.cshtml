@@ -14,6 +14,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: 20px auto;
             max-width: 600px;
+            color: #000;
         }
 
         .messageinfo {
@@ -27,6 +28,7 @@
 
         .insightscontainer {
             background-color: #e0e0e0;
+            color: #000;
             padding: 20px;
             border-radius: 8px;
             max-width: 600px;
@@ -42,10 +44,22 @@
         .insightitem {
             margin-bottom: 10px;
         }
+
+        .emptylist {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 85vh;
+            text-align: center;
+        }
+
+        .emptylist h2 {
+            margin: 0; /* Removes default margin from h2 to help with centering */
+        }
     </style>
 </head>
 
-@if (EventsReceived.EventReceivedListStatic!=null)
+@if (EventsReceived.EventReceivedListStatic != null && EventsReceived.EventReceivedListStatic.Count != 0)
 {
     @foreach (var eventReceived in EventsReceived.EventReceivedListStatic)
     {
@@ -77,4 +91,10 @@
             </div>
         }
     }
+}
+else
+{
+    <div class="emptylist">
+        <h2>There is no customer insight yet.</h2>
+    </div>
 }
