@@ -15,13 +15,14 @@
         }
 
         .homepage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            height: 100vh; /* Full viewport height */
             position: relative;
-            /* Needed for positioning the pseudo-element */
             color: white;
             text-align: left;
-            padding: 100px 20px;
-            overflow: hidden;
-            /* Ensures the pseudo-element is clipped to the header's bounds */
+            padding-left: 10%; /* Aligns text to the left with padding */
         }
 
         .homepage::before {
@@ -41,34 +42,27 @@
 
         .homepage h1 {
             font-family: Bell MT;
-            font-size: 42px;
+            font-size: 80px;
             margin-bottom: 20px;
-            margin-left: 10%;
-            position: relative;
-            /* Ensures text is above the blurred image */
         }
 
         .homepage p {
             color: #F2F6F2;
             font-family: Sans serif;
-            font-size: 20px;
+            font-size: 30px;
             margin-bottom: 30px;
-            margin-left: 10%;
-            position: relative;
-            /* Ensures text is above the blurred image */
         }
 
         .button {
             font-family: Arial;
             color: #fff;
             padding: 10px 20px;
-            margin-left: 10%;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;
+            font-size: 20px;
             border: 2px solid white;
-            position: relative;
-            /* Ensures button is above the blurred image */
+            width: 140px;
+            text-align: center;
         }
     </style>
 </head>
