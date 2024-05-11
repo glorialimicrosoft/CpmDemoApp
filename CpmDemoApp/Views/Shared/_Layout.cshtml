@@ -7,8 +7,60 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CpmDemoApp.styles.css" asp-append-version="true" />
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #EEFBF2;
+            padding: 10px;
+        }
+
+        .shopname {
+            display: flex;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .logo {
+            height: 38px;
+            padding-right: 10px;
+        }
+
+        .contactbutton {
+            margin-right: 30px;
+            text-align: right;
+            padding: 5px 10px;
+            text-decoration: none;
+            display: inline-block;
+            border: 2px solid black;
+        }
+
+        .contactbuttontext {
+            font-size: 16px;
+            color: #000;
+            font-family: Arial rounded mt;
+        }
+
+        .shopnametext {
+            font-size: 24px;
+            font-family: script MT;
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <div class="shopname">
+            <img src="~/assets/logo.png" alt="Shop Logo" class="logo">
+            @Html.ActionLink("Blossom Bliss Studio", "Index", "Home", new { area = "" }, new { @class = "navbar-brand shopnametext" })
+        </div>
+        <div class="contactbutton">
+            @Html.ActionLink("Contact Us", "Contact", "Home", new { area = "" }, new { @class = "nav-link contactbuttontext" })
+        </div>
+    </div>
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

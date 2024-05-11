@@ -35,7 +35,7 @@
             height: 100%; /* Make sure html and body are full height */
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #eaeaea;
             font-family: Arial, sans-serif;
         }
 
@@ -46,65 +46,84 @@
             padding-bottom: 70px;
         }
 
+        .homepage {
+            position: relative;
+            /* Needed for positioning the pseudo-element */
+            color: white;
+            text-align: left;
+            padding: 100px 20px;
+            overflow: hidden;
+            /* Ensures the pseudo-element is clipped to the header's bounds */
+        }
+
+        .homepage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('~/assets/flower_background.jpg');
+            background-size: cover;
+            filter: blur(3px);
+            /* Apply blur effect */
+            z-index: -1;
+            /* Ensures the pseudo-element is behind the content */
+        }
+
+        .homepage h1 {
+            font-family: Bell MT;
+            font-size: 42px;
+            margin-bottom: 20px;
+            margin-left: 30px;
+            position: relative;
+            /* Ensures text is above the blurred image */
+        }
+
+        .homepage p {
+            color: #F2F6F2;
+            font-family: Sans serif;
+            font-size: 20px;
+            margin-bottom: 30px;
+            margin-left: 30px;
+            position: relative;
+            /* Ensures text is above the blurred image */
+        }
+
         .button {
-            position: fixed;
-            bottom: 60px; /* Adjust to align properly above the footer */
-            width: 100%;
-            text-align: left; /* Center the form button */
-        }
-
-        .header {
-            background-color: #3498db; /* Changed header color to blue */
-            padding: 20px;
-            text-align: right; /* Aligning the logo to the right */
+            font-family: Arial;
             color: #fff;
-        }
-
-        .shop-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .shop-number {
+            padding: 10px 20px;
+            margin-left: 30px;
+            text-decoration: none;
+            display: inline-block;
             font-size: 16px;
-            margin-top: 5px;
-        }
-
-        .footer {
-            background-color: #3498db; /* Footer color */
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            border: 2px solid white;
+            position: relative;
+            /* Ensures button is above the blurred image */
         }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <div class="shop-name">Contoso Flower Shop Business Chat</div>
-        <div class="shop-number">+1(833)-595-2461</div>
+    <div class="homepage">
+        <h1> Discover Unique <br> Floral Magic </h1>
+        <p> Elevate any moment with our expertly designed flower arrangements, <br> crafted with love in Seattle. </p>
+        <a href="#" class="button">Shop Now</a>
     </div>
 
-    <div class="content-container">
+    @* <div class="content-container">
         <div id="partialContainer">
-            @Html.Partial("MessagesList")
+                @Html.Partial("MessagesList")
         </div>
     </div>
 
     <div class="button">
-        @using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
-        {
+            @using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
+            {
             <input type="submit" value="Clear History" class="btn-secondary" />
-        }
-    </div>
-
-    <div class="footer">
-        &copy; 2024 Contoso Flower Shop Business Chat. All rights reserved.
-    </div>
+            }
+    </div> *@
 </body>
 
 
