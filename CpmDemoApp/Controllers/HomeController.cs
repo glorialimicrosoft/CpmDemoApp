@@ -8,7 +8,7 @@ namespace CpmDemoApp.Controllers
     {
         private static bool _clientInitialized;
 
-        public HomeController(IOptions<ClientOptions> options)
+        public HomeController()
         {
             if (!_clientInitialized)
             {

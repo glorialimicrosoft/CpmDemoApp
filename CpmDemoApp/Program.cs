@@ -3,7 +3,6 @@ using CpmDemoApp.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<ClientOptions>(builder.Configuration.GetSection("ClientOptions"));
 builder.Services.AddControllersWithViews();
 
 
