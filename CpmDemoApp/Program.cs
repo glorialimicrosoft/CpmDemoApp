@@ -4,8 +4,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<ClientOptions>(builder.Configuration.GetSection("ClientOptions"));
-builder.Services.AddControllersWithViews();
-
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", config =>
+    {
+        config.Cookie.Name = "UserLoginCookie";
+        config.LoginPath = "/Account/Login";
+    });
 
 var app = builder.Build();
 
@@ -22,6 +27,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

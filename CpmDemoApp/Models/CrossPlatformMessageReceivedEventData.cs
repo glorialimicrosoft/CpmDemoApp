@@ -7,6 +7,6 @@ namespace CpmDemoApp.Models
         public string Content { get; set; }
         public string ChannelType { get; set; }
         public string Type { get; set; }
-        public string ReceivedTimeStamp { get; set; }
+        public DateTimeOffset ReceivedTimeStamp { get; set; }
     }
 }

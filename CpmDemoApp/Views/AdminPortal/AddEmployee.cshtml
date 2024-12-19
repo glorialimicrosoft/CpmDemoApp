@@ -1,0 +1,32 @@
+﻿@using CpmDemoApp.Util;
+@model string
+
+@{
+    ViewBag.Title = "Add Employee";
+}
+
+<div>
+    <h2 class="titles">Add Employee</h2>
+
+    <!-- Result message container -->
+    <div id="result-message" class="hidden"></div>
+
+    <form id="add-employee-form" method="post" action="/conversationAdmin/AddEmployee">
+
+        <div>
+            <input type="hidden" name="id" value="@Model" />
+            <label>Agents:</label>
+            @foreach (var agent in Data.AgentLists)
+            {
+                @if (!Data.ConversationDB[Model].SelectedAgentIds.Contains(agent.Id))
+                {
+                    <div>
+                        <input type="checkbox" name="SelectedAgentIds" value="@agent.Id" />
+                        <label>@agent.Name</label>
+                    </div>
+                }
+            }
+        </div>
+        <button type="button" onclick="submitAddEmployeeForm()">Add Selected</button>
+    </form>
+</div>

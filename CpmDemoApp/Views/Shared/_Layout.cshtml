@@ -1,43 +1,160 @@
-﻿<!DOCTYPE html>
+﻿@using CpmDemoApp.Util;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Message Analysis Demo App</title>
+    <title>@ViewData["Title"] - Threaded Conversation Demo App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CpmDemoApp.styles.css" asp-append-version="true" />
+    <style>
+        body, html {
+            height: 100%; /* Make sure html and body are full height */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #EEFBF2;
+            padding: 10px;
+            height: 76px; /* Explicit height for header */
+            z-index: 1030; /* Keep header above other elements */
+        }
+
+        .shopname {
+            display: flex;
+            margin-top: 10px;
+            margin-left: 10%;
+        }
+
+        .logo {
+            height: 38px;
+            padding-right: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center; /* Align account info and button */
+        }
+
+        .customerinsightsbutton {
+            margin-right: 10%;
+            text-align: right;
+            padding: 5px 10px;
+            text-decoration: none;
+            display: inline-block;
+            border: 2px solid black;
+        }
+
+        .loginbuttontext {
+            font-size: 16px;
+            color: white;
+            font-family: Arial rounded mt;
+        }
+
+        .shopnametext {
+            font-size: 24px;
+            font-family: script MT;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            height: calc(100vh - 76px - 60px); /* Full viewport height minus footer and header */
+            position: relative;
+            text-align: left;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+
+        .body::before {
+            content: '';
+            background-image: url('/assets/background.png');
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            filter: blur(3px);
+            /* Apply blur effect */
+            z-index: -1;
+            /* Ensures the pseudo-element is behind the content */
+        }
+
+        .footer {
+            background-color: #EEFBF2;
+            color: #808080;
+            font-family: ink free;
+            text-align: right;
+            padding-right: 20px;
+            height: 60px; /* Explicit height for footer */
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 1030;
+        }
+
+        .account-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: black;
+            font-family: Arial rounded mt;
+        }
+
+
+        .login-button {
+            display: inline-block;
+        }
+
+        .nav-link.headerloginbuttontext {
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            font-family: Arial rounded mt;
+        }
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Message Analysis Demo App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                    </ul>
+    <div class="header">
+        <div class="shopname">
+            <img src="~/assets/logo.png" alt="Shop Logo" class="logo">
+            @Html.ActionLink("Blossom Bliss Studio", "Index", "Home", new { area = "" }, new { @class = "navbar-brand shopnametext" })
+        </div>
+        <div class="header-right">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <span>👤</span>
+                <span class="account-name">@User.Identity.Name</span>
+                <div class="login-button">
+                    @Html.ActionLink("Log out", "Logout", "Account", new { area = "" }, new { @class = "nav-link headerloginbuttontext" })
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            }
+            else
+            {
+                <div class="login-button">
+                    @Html.ActionLink("Log in", "Login", "Account", new { area = "" }, new { @class = "nav-link headerloginbuttontext" })
+                </div>
+            }
+        </div>
+    </div>
+    <div class="body">
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Message Analysis Demo App
-        </div>
-    </footer>
+    <div class="footer">
+        &copy; 2024 Blossom Bliss Studio. All rights reserved.
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,44 @@
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #EEFBF2;
+    padding: 10px;
+    z-index: 1030; /* Keep header above other elements */
+}
+
+.left {
+    flex: 1;
+    text-align: left;
+    font-family: script MT;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 10px;
+    margin-left: 10%;
+}
+
+.center {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.right {
+  flex: 1;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.account-symbol {
+  margin-right: 10px;
+}
+
+.account-name {
+  font-weight: bold;
+}

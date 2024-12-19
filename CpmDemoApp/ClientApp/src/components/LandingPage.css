@@ -1,0 +1,32 @@
+.landing-page {
+    padding: 20px;
+  }
+  
+  .landing-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .landing-page ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .landing-page li {
+    margin-bottom: 10px;
+  }
+  
+  .landing-page button {
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .landing-page button:hover {
+    background-color: darkgreen;
+  }

@@ -1,0 +1,35 @@
+.conversation-list {
+    padding: 10px;
+    word-break: break-word;
+  }
+
+.conversation-item {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: auto;
+}
+  
+  .conversation-item:hover {
+    background-color: #e1e1e1;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: darkgreen;
+  }

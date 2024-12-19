@@ -1,0 +1,80 @@
+.App {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 76px - 60px); /* Full viewport height minus footer and header */
+    position: relative;
+    text-align: left;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.unauthorizedPage {
+    padding: 20px;
+}
+
+.unauthorizedPage h1 {
+    margin-bottom: 20px;
+    text-align: center; /* Align text horizontally within the container */
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  #flex-direction: column;
+  width: 80%;
+}
+.panel {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 10px 10px 20px 10px;
+    height: calc(100vh - 76px - 60px); /* Full viewport height minus footer and header */
+}
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 2; /* Adjust the flex value as needed */
+}
+
+.notification-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1; /* Adjust the flex value as needed */
+    overflow-y: auto;
+}
+
+.conversation-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1; /* Adjust the flex value as needed */
+    overflow-y: auto;
+}
+
+.chat-window .messages {
+  flex: 1;
+  margin-bottom: 10px;
+  overflow-y: auto;
+}
+
+.chat-window textarea {
+  flex: 0;
+}
+
+/* Ensure the content is displayed side by side */
+.content {
+  display: flex;
+}
+
+.content .chat-window,
+.content .notification-panel,
+.content .conversation-list {
+  flex: 1;
+  margin: 10px;
+}

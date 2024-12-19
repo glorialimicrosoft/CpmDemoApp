@@ -1,0 +1,31 @@
+﻿@using CpmDemoApp.Util;
+@model CpmDemoApp.Models.Conversation
+
+@{
+    ViewBag.Title = "Remove Employee";
+}
+
+<div>
+    <h2 class= "titles">Remove Employee</h2>
+
+    <!-- Result message container -->
+    <div id="result-message" class="hidden"></div>
+
+    <form id="remove-employee-form" method="post" action="/conversationAdmin/RemoveEmployee">
+        <div>
+            <input type="hidden" name="id" value="@Model.Id" />
+            <label>Agents:</label>
+            @foreach (var agent in @Model.SelectedAgents)
+            {
+                @if (Data.ConversationDB[Model.Id].SelectedAgentIds.Contains(agent.Id))
+                {
+                    <div>
+                        <input type="checkbox" name="SelectedAgentIds" value="@agent.Id" />
+                        <label>@agent.Name</label>
+                    </div>
+                }
+            }
+        </div>
+        <button type="button" onclick="submitRemoveEmployeeForm()">Remove Selected</button>
+    </form>
+</div>

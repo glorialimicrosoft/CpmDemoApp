@@ -1,82 +1,67 @@
-﻿@{  
-    ViewBag.Title = "Home Page";  
-}  
+﻿@using CpmDemoApp.Util;
 
-<script>
-    function loadPartialView() {
-            $.ajax({
-                url: "@Url.Action("MessagesList","Home")",
-                type: 'POST',
-                dataType: 'html',        
-                cache: false,
-                success: function (html) {
-                     $("#partialContainer").html(html); 
-                }
-            });
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Shop - Inquiry with Insights</title>
+    <style>
+        body, html {
+            height: 100%; /* Make sure html and body are full height */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
-    function RefreshPartial(){
-        //this will wait 1 seconds and then fire the load partial function
-        setTimeout(function(){
-            loadPartialView();
-            //recall this function so that it will continue to loop
-            RefreshPartial();
-        }, 1000);
+
+        body{
+            color: white;
+        }
+
+        .info {
+            padding-left: 10%; /* Aligns text to the left with padding */
+        }
+
+        .info h1 {
+            font-family: Bell MT;
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .info p {
+            color: #F2F6F2;
+            font-family: Sans serif;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            font-family: Arial;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            border: 2px solid white;
+            width: 140px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<div class="info">
+    <h1> Discover Unique <br> Floral Magic </h1>
+    <p> Elevate any moment with our expertly designed flower arrangements, <br> crafted with love in Seattle. </p>
+    @if (!Session.LoggedIn)
+    {
+        <div class="button">
+            @Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "nav-link loginbuttontext" })
+        </div>
     }
-    //initialize the loop
-    RefreshPartial();
-</script>
-
-<h1>Flower Shop Business Chat</h1>  
-  
-<strong>Send a Message</strong>
-
-<tr class="form-group">  
-    @using (Html.BeginForm("Index", "Home", FormMethod.Post))  
-    {  
-        <table>   
-            <tr>  
-                <td> @Html.Label("Phone Number: ")  </td>
-                <td> @Html.TextBox("Phone_Number") </td>  
-            </tr> 
-            
-            <tr>  
-                <td>@Html.Label("Message:")  </td>
-                <td>@Html.TextBox("Message")  </td>
-            </tr>  
-
-            <tr>  
-                <td>@Html.Label("Image Url:")  </td>
-                <td>@Html.TextBox("Image")  </td>
-            </tr>  
-  
-            <tr>  
-                <td>  
-                    <input type="submit" value="Send" class="btn-primary" />  
-                </td>  
-  
-            </tr> 
-        </table>  
-    }  
-</tr>
-
-<br>
-
-<div>  
-    <strong>Chat History</strong>  
-</div>  
-
-<div style="border:dotted; height: 600px; overflow: auto">
-    <div id="partialContainer">
-        @Html.Partial("MessagesList")
-    </div>
 </div>
 
-<br>
-
-@using (Html.BeginForm("ClearHistory", "Home", FormMethod.Post))
-{
-    <input type="submit" value="Clear History" class="btn-secondary" />  
-}
 
 <script>
     if ( window.history.replaceState ) {

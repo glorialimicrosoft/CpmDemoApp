@@ -1,0 +1,41 @@
+﻿@page
+@model CpmDemoApp.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            height: calc(100vh - 76px - 60px); /* Full viewport height minus footer and header */
+            position: relative;
+            color: black;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<div class="login-container" style="max-width: 400px; margin: 50px auto; font-family: Arial, sans-serif;">
+    <h2>Login</h2>
+    <form method="post" action="/Account/Login">
+        <div style="margin-bottom: 15px;">
+            <label for="username">Username:</label><br />
+            <input type="text" id="username" name="username" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="password">Password:</label><br />
+            <input type="password" id="password" name="password" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <button type="submit" style="width: 100%; background-color: #007bff; color: white; padding: 10px; border: none; border-radius: 4px;">Login</button>
+        @if (ViewBag.Error != null)
+        {
+            <div style="margin-top: 10px; color: red;">@ViewBag.Error</div>
+        }
+    </form>
+</div>

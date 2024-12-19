@@ -1,0 +1,79 @@
+﻿@using CpmDemoApp.Util;
+@{
+    ViewBag.Title = "AdminPortal";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .sidebar {
+            position: fixed; /* Keep the sidebar fixed */
+            width: 260px; /* Set a fixed width */
+            height: 100%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            overflow-y: auto; /* Enable scrolling for overflowing content */
+            border-right: 1px solid #dee2e6;
+        }
+
+        .main-content {
+            margin-left: 260px; /* Adjust margin to match sidebar width */
+            padding: 20px;
+            flex: 1; /* Allow the main content to grow */
+            overflow-y: auto;
+        }
+
+        .container-fluid {
+            height: 100%; /* Ensure the layout spans the full height */
+            display: flex;
+            flex-direction: row; /* Sidebar and main content side by side */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="sidebar col-md-3">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="@Url.Action("NewIncomingMessages", "Home")" class="nav-link ajax-link">
+                        New Messages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("List", "AdminPortal")" class="nav-link ajax-link">
+                        Admin: View All Conversations
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <main class="main-content col-md-9">
+            <div id="content">
+            <!-- Dynamic content will load here -->
+                <h2 class="titles">Select an option from the left panel to view its content here.</h2>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Attach click event to links with class "ajax-link"
+            $('.ajax-link').on('click', function (event) {
+                event.preventDefault(); // Prevent the default link behavior
+
+                // Get the URL from the link's href attribute
+                var url = $(this).attr('href');
+
+                // Load the content into the #content div
+                $('#content').load(url, function (response, status, xhr) {
+                    if (status === "error") {
+                        $('#content').html("<p>Error loading page: " + xhr.status + " " + xhr.statusText + "</p>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>

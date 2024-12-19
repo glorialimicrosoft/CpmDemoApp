@@ -1,0 +1,12 @@
+﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Apply layout
+    string filePath = System.IO.Path.Combine(Environment.WebRootPath, "index.html");
+    string htmlContent = System.IO.File.ReadAllText(filePath);
+}
+
+
+<div id="inbox">
+    @Html.Raw(htmlContent)
+</div>

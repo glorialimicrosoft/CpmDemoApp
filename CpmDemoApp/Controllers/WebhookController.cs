@@ -4,6 +4,10 @@ using Azure.Messaging.EventGrid;
 using Azure.Messaging.EventGrid.SystemEvents;
 using System.Text.Json;
 using CpmDemoApp.Models;
+using CpmDemoApp.Util;
+using CpmDemoApp.NugetOperations;
+using Azure.Communication.Messages;
+using Microsoft.Extensions.Options;
 
 namespace viewer.Controllers
 {
@@ -18,10 +22,18 @@ namespace viewer.Controllers
             => HttpContext.Request.Headers["aeg-event-type"].FirstOrDefault() ==
                "Notification";
 
+        private static string _channelRegistrationId;
+
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
+
+        public WebhookController(IOptions<ClientOptions> options)
+        {
+            _channelRegistrationId = options.Value.ChannelRegistrationId;
+                
+        }
 
         [HttpOptions]
         public async Task<IActionResult> Options()
@@ -77,25 +89,51 @@ namespace viewer.Controllers
             var eventGridEvents = JsonSerializer.Deserialize<EventGridEvent[]>(jsonContent, _options);
             foreach (var eventGridEvent in eventGridEvents)
             {
-                switch (eventGridEvent.EventType.ToLower())
+                if (eventGridEvent.EventType.ToLower() == "microsoft.communication.advancedmessagereceived") 
                 {
-                    case "microsoft.communication.advancedmessagereceived":
-                        var messageReceivedEventData = JsonSerializer.Deserialize<CrossPlatformMessageReceivedEventData>(eventGridEvent.Data.ToString(), _options);
+                    var messageReceivedEventData = JsonSerializer.Deserialize<CrossPlatformMessageReceivedEventData>(eventGridEvent.Data.ToString(), _options);
 
-                        Messages.MessagesListStatic.Add(new Message
+                    if(messageReceivedEventData.From.Contains("conversationId", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // we don't want to handle conversation messages received events, they are formatted as "{"from":"xxx","conversationId":"xxx"}"
+                        break;
+                    }
+
+                    if (messageReceivedEventData.To.Equals(_channelRegistrationId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Data.NewIncomingMessagesListStatic.Add(new NewInboxItem
                         {
-                            Text = $"Received message from \"{messageReceivedEventData.From}\": \"{messageReceivedEventData.Content}\""
+                            MessageContent = messageReceivedEventData?.Content,
+                            CustomerPhoneNumber = messageReceivedEventData.From,
+                            ArrivalTime = messageReceivedEventData.ReceivedTimeStamp,
+                            Analysis = new AdvancedMessageAnalysisCompletedEventData
+                            {
+                                IntentAnalysis = "Placeholder",
+                                ExtractedKeyPhrases = new List<string> { "palceholder" },
+                            }
                         });
-                        break;
-                    case "microsoft.communication.advancedmessageanalysiscompleted":
-                        var messageAnalysisEventData = JsonSerializer.Deserialize<AdvancedMessageAnalysisCompletedEventData>(eventGridEvent.Data.ToString(), _options);
-                        Messages.MessagesListStatic.Add(new Message
+                    }
+                }
+                else if (eventGridEvent.EventType.ToLower() == "microsoft.communication.advancedmessageanalysiscompleted")
+                {
+                    var analysisCompletedEventData = JsonSerializer.Deserialize<AdvancedMessageAnalysisCompletedEventData>(eventGridEvent.Data.ToString(), _options);
+
+                    if (analysisCompletedEventData.To.Equals(_channelRegistrationId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        for (int i = Data.NewIncomingMessagesListStatic.Count - 1; i >= 0; i--)
                         {
-                            Analysis = messageAnalysisEventData
-                        });
-                        break;
-                    default:
-                        break;
+                            var item = Data.NewIncomingMessagesListStatic[i];
+
+                            // Check if the incoming event matches the current item
+                            if (item.MessageContent == analysisCompletedEventData.OriginalMessage &&
+                                item.CustomerPhoneNumber == analysisCompletedEventData.From)
+                            {
+                                // Fill the Analysis field with the incoming event
+                                item.Analysis = analysisCompletedEventData;
+                                break; // Exit the loop once the match is found
+                            }
+                        }
+                    }
                 }
             }
 

@@ -6,10 +6,11 @@
 
         public LanguageDetection LanguageDetection { get; set; }
 
-        public Sentiment Sentiment { get; set; }
-
         public string IntentAnalysis { get; set; }
 
-        public List<string> KeyphraseExtraction { get; set; }
+        public List<string> ExtractedKeyPhrases { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
+        public DateTimeOffset ReceivedTimeStamp { get; set; }
     }
 }

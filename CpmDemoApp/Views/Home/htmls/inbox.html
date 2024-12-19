@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .email-group {
+            margin-bottom: 20px;
+        }
+        .email-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-container">
+        <label for="userFilter">Filter by User:</label>
+        <input type="text" id="userFilter" oninput="filterEmails()">
+        <label for="dateFilter">Filter by Date:</label>
+        <input type="date" id="dateFilter" oninput="filterEmails()">
+        <label for="customFilter">Custom Filter:</label>
+        <input type="text" id="customFilter" oninput="filterEmails()">
+        <label for="typeFilter">Filter by Type:</label>
+        <select id="typeFilter" onchange="filterEmails()">
+            <option value="">All</option>
+            <option value="order">Order</option>
+            <option value="happy">Happy Email</option>
+            <option value="complaint">Complaint</option>
+        </select>
+    </div>
+    <div id="inbox"></div>
+
+    <script>
+        const emails = [
+            { user: 'user1@example.com', date: '2024-09-13', type: 'order', subject: 'Order Confirmation', content: 'Your order has been confirmed.' },
+            { user: 'user2@example.com', date: '2024-09-12', type: 'happy', subject: 'Thank You!', content: 'Thank you for your excellent service.' },
+            { user: 'user1@example.com', date: '2024-09-11', type: 'complaint', subject: 'Issue with Product', content: 'I have an issue with the product I received.' },
+            // Add more email objects here
+        ];
+
+        function groupEmailsByDate(emails) {
+            return emails.reduce((groups, email) => {
+                const date = email.date;
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(email);
+                return groups;
+            }, {});
+        }
+
+        function displayEmails(emails) {
+            const inbox = document.getElementById('inbox');
+            inbox.innerHTML = '';
+            const groupedEmails = groupEmailsByDate(emails);
+            for (const date in groupedEmails) {
+                const emailGroup = document.createElement('div');
+                emailGroup.className = 'email-group';
+                const dateHeader = document.createElement('h3');
+                dateHeader.textContent = date;
+                emailGroup.appendChild(dateHeader);
+                groupedEmails[date].forEach(email => {
+                    const emailItem = document.createElement('div');
+                    emailItem.className = 'email-item';
+                    emailItem.innerHTML = `<strong>${email.subject}</strong><br>${email.content}<br><em>${email.user}</em>`;
+                    emailGroup.appendChild(emailItem);
+                });
+                inbox.appendChild(emailGroup);
+            }
+        }
+
+        function filterEmails() {
+            const userFilter = document.getElementById('userFilter').value.toLowerCase();
+            const dateFilter = document.getElementById('dateFilter').value;
+            const customFilter = document.getElementById('customFilter').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const filteredEmails = emails.filter(email => {
+                return (
+                    (!userFilter || email.user.toLowerCase().includes(userFilter)) &&
+                    (!dateFilter || email.date === dateFilter) &&
+                    (!customFilter || email.subject.toLowerCase().includes(customFilter) || email.content.toLowerCase().includes(customFilter)) &&
+                    (!typeFilter || email.type === typeFilter)
+                );
+            });
+            displayEmails(filteredEmails);
+        }
+
+        // Initial display
+        displayEmails(emails);
+    </script>
+</body>
+</html>

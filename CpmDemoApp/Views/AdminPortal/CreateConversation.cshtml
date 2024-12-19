@@ -1,0 +1,35 @@
+﻿@using CpmDemoApp.Util;
+@model CpmDemoApp.Models.CreateConversationForm
+
+@{
+    ViewBag.Title = "Create Conversation";
+}
+
+<div>
+    <h2 class="titles">Create Conversation</h2>
+    <!-- Result message container -->
+    <div id="result-message" class="hidden"></div>
+
+    <!-- Form to create a conversation -->
+    <form id="create-conversation-form" method="post" action="/conversationAdmin/Create">
+        <div>
+            <label for="CustomerPhoneNumber">Phone Number:</label>
+            <input type="text" id="CustomerPhoneNumber" name="CustomerPhoneNumber" value="@Model.CustomerPhoneNumber" />
+        </div>
+        <div>
+            <label for="message">Message:</label>
+            <input type="text" id="message" name="InitialIncomingMessage" value="@Model.InitialIncomingMessage" />
+        </div>
+        <div>
+            <label>Agents:</label>
+            @foreach (var agent in Data.AgentLists)
+            {
+                <div>
+                    <input type="checkbox" name="SelectedAgentIds" value="@agent.Id" />
+                    <label>@agent.Name</label>
+                </div>
+            }
+        </div>
+        <button type="button" onclick="submitCreateConversationForm()">Submit</button>
+    </form>
+</div>

@@ -1,0 +1,225 @@
+﻿@using CpmDemoApp.Util;
+@{
+    ViewBag.Title = "New Customer Messages";
+}
+<div>
+    <h2 class="titles">New Customer Messages</h2>
+    <div id="inbox"></div>
+
+    <!-- Popup container for Create Conversation -->
+    <div id="popup-container" class="popup-container hidden">
+        <div class="popup-content">
+            <span class="close-button" onclick="closePopup()">&times;</span>
+            <div id="create-conversation-container"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var incomingMessages = [];
+    incomingMessages = JSON.parse('@Html.Raw(Json.Serialize(Data.NewIncomingMessagesListStatic))');
+
+
+    function groupIncomingMessagesByDate(incomingMessages) {
+        if (!Array.isArray(incomingMessages)) {
+            console.error("incomingMessages is not an array");
+            return {};
+        }
+        return incomingMessages.reduce((groups, message) => {
+            const dateObject = new Date(message.arrivalTime);
+
+            // Extract the date in the format YYYY-MM-DD
+            const year = dateObject.getUTCFullYear();
+            const month = String(dateObject.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(dateObject.getUTCDate()).padStart(2, '0');
+
+            const options = { year: 'numeric', month: 'short', day: '2-digit' };
+            const formattedDate = dateObject.toLocaleDateString('en-US', options);
+
+            if (!groups[formattedDate]) {
+                groups[formattedDate] = [];
+            }
+            groups[formattedDate].push(message);
+            return groups;
+        }, {});
+    }
+
+        function displayIncomingMessages(incomingMessages) {
+        const inbox = document.getElementById('inbox');
+        inbox.innerHTML = '';
+
+        if (!incomingMessages || incomingMessages.length === 0) {
+            const noMessagesElement = document.createElement('div');
+            noMessagesElement.className = 'no-messages';
+            noMessagesElement.textContent = "No New Messages Yet...";
+            inbox.appendChild(noMessagesElement);
+            return; // Exit the function as there are no messages to display
+        }
+
+        const groupedMessages = groupIncomingMessagesByDate(incomingMessages);
+        for (const date in groupedMessages) {
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+
+            const dateHeader = document.createElement('h3');
+            dateHeader.textContent = date;
+            messageGroup.appendChild(dateHeader);
+
+            const messageList = document.createElement('ul');
+
+            groupedMessages[date].forEach(message => {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+
+                const url = `@Url.Action("CreateForm", "AdminPortal")`;
+
+                messageItem.innerHTML = `
+                    <strong>From:</strong> ${message.customerPhoneNumber}<br>
+                    <strong>Message:</strong> ${message.messageContent}<br>
+                    <strong>Intent Analysis:</strong> ${message.analysis?.intentAnalysis} <br>
+                    <button onclick="loadCreateConversation('${url}', '${message.customerPhoneNumber}', '${message.messageContent}')">Create Conversation</button>
+                `;
+                messageList.appendChild(messageItem);
+            });
+
+            messageGroup.appendChild(messageList);
+            inbox.appendChild(messageGroup);
+        }
+    }
+
+    function loadCreateConversation(url, customerPhoneNumber, messageContent) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                From: customerPhoneNumber,
+                MessageContent: messageContent
+            },
+            success: function (html) {
+                const popup = document.getElementById('popup-container');
+                const container = document.getElementById('create-conversation-container');
+                container.innerHTML = html;
+                popup.classList.remove('hidden'); // Show the popup
+            },
+            error: function (error) {
+                console.error("Error loading partial view:", error);
+            }
+        });
+    }
+
+    function closePopup() {
+        const popup = document.getElementById('popup-container');
+        popup.classList.add('hidden'); // Hide the popup
+        document.getElementById('create-conversation-container').innerHTML = ''; // Clear the popup content
+    }
+
+
+    function checkForNewMessages() {
+        $.ajax({
+            url: '/Home/GetNewMessages', // URL to your ActionResult
+            type: 'GET',
+            dataType: 'json',
+            success: function (newMessages) {
+                console.log("Fetched new messages:", newMessages);
+                displayIncomingMessages(newMessages);
+            },
+            error: function (error) {
+                console.error("Error in checkForNewMessages:", error);
+            }
+        });
+    }
+
+    function submitCreateConversationForm() {
+        const form = document.getElementById('create-conversation-form');
+        const formData = new FormData(form);
+        const resultMessage = document.getElementById('result-message');
+
+        $.ajax({
+            url: form.action,
+            type: 'POST',
+            data: Object.fromEntries(formData.entries()),
+            success: function (response) {
+                resultMessage.textContent = response.message;
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add(response.success ? 'success' : 'failure');
+            },
+            error: function (error) {
+                resultMessage.textContent = "An error occurred while creating the conversation.";
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add('failure');
+            }
+        });
+    }
+
+    // Call the function every few seconds
+    setInterval(checkForNewMessages, 3000); // Adjust the interval as needed
+
+    // Initial display
+    displayIncomingMessages(incomingMessages);
+</script>
+
+<style>
+    .no-messages {
+        text-align: center;
+        color: #888;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+    .popup-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-container.hidden {
+        display: none;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 50%;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .close-button:hover {
+        color: #ff0000;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .success {
+        color: green;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .failure {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>

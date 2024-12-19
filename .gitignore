@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+CpmDemoApp/wwwroot/static/
+CpmDemoApp/wwwroot/robots.txt
+CpmDemoApp/wwwroot/manifest.json
+CpmDemoApp/wwwroot/logo512.png
+CpmDemoApp/wwwroot/logo192.png
+CpmDemoApp/wwwroot/index.html
+CpmDemoApp/wwwroot/asset-manifest.json
+CpmDemoApp/ClientApp/src/config.js

@@ -1,0 +1,217 @@
+﻿@using CpmDemoApp.Util;
+
+@{
+    ViewBag.Title = "Conversations";
+}
+<h2 class="titles">Conversations</h2>
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Conversation Id</th>
+                <th>Phone Number</th>
+                <th>Agent Update</th>
+                <th>Terminate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var conversation in Data.ConversationDB.Values)
+            {
+                <tr>
+                    <td>@conversation.Id </td>
+                    <td>@conversation.ConversationCustomer.PhoneNumber</td>
+
+                    <td>
+                        <button onclick="UpdateEmployee('@Url.Action("AddEmployeePage", "AdminPortal")', '@conversation.Id')">Add Agent</button>
+                        <button onclick="UpdateEmployee('@Url.Action("RemoveEmployeePage", "AdminPortal")', '@conversation.Id')">Remove Agent</button>
+                    </td>
+                    <td>
+                        <button class="linkbutton" onclick="terminateConversation('@Url.Action("Delete", "AdminPortal")', '@conversation.Id')">Terminate</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Popup container for Update Employee -->
+    <div id="popup-container-employee" class="popup-container-employee hidden">
+        <div class="popup-content-employee">
+            <span class="close-button" onclick="closeUpdateEmployeePopup()">&times;</span>
+            <div id="update-employee-container"></div>
+        </div>
+    </div>
+
+    <!-- Popup container for Terminate Conversation -->
+    <div id="popup-container-terminate" class="popup-container-employee hidden">
+        <div class="popup-content-employee">
+            <span class="close-button" onclick="closeTerminatePopup()">&times;</span>
+            <p id="terminate-result-message"></p>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function UpdateEmployee(url, conversationId) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                id: conversationId
+            },
+            success: function (html) {
+                const popup = document.getElementById('popup-container-employee');
+                const container = document.getElementById('update-employee-container');
+                container.innerHTML = html;
+                popup.classList.remove('hidden'); // Show the popup
+            },
+            error: function (error) {
+                console.error("Error loading partial view:", error);
+            }
+        });
+    }
+
+    function closeUpdateEmployeePopup() {
+        const popup = document.getElementById('popup-container-employee');
+        popup.classList.add('hidden'); // Hide the popup
+        document.getElementById('add-employee-container').innerHTML = ''; // Clear the popup content
+    }
+
+    function terminateConversation(url, conversationId) {
+        const resultMessage = document.getElementById('terminate-result-message');
+        const popup = document.getElementById('popup-container-terminate');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+             data: {
+                 id: conversationId
+             },
+             success: function (response) {
+                if (response.success) {
+                    // Remove the terminated conversation row from the table
+                    $(`tr:has(td:contains('${conversationId}'))`).remove();
+                }
+                resultMessage.textContent = response.message;
+                resultMessage.classList.add(response.success ? 'success' : 'failure');
+                popup.classList.remove('hidden'); // Show the popup
+            },
+            error: function (error) {
+                messageContainer.textContent = "An error occurred while terminating the conversation.";
+                messageContainer.classList.add('failure');
+                popup.classList.remove('hidden'); // Show the popup
+            }
+        });
+    }
+
+    function closeTerminatePopup() {
+        const popup = document.getElementById('popup-container-terminate');
+        popup.classList.add('hidden'); // Hide the popup
+        document.getElementById('terminate-result-message').textContent = ''; // Clear the message
+    }
+
+     function submitAddEmployeeForm() {
+        const form = document.getElementById('add-employee-form');
+        const formData = new FormData(form);
+        const resultMessage = document.getElementById('result-message');
+
+        $.ajax({
+            url: form.action,
+            type: 'POST',
+            data: Object.fromEntries(formData.entries()),
+            success: function (response) {
+                resultMessage.textContent = response.message;
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add(response.success ? 'success' : 'failure');
+            },
+            error: function (error) {
+                resultMessage.textContent = "An error occurred while adding the employee.";
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add('failure');
+            }
+        });
+    }
+
+     function submitRemoveEmployeeForm() {
+        const form = document.getElementById('remove-employee-form');
+        const formData = new FormData(form);
+        const resultMessage = document.getElementById('result-message');
+
+        $.ajax({
+            url: form.action,
+            type: 'POST',
+            data: Object.fromEntries(formData.entries()),
+            success: function (response) {
+                resultMessage.textContent = response.message;
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add(response.success ? 'success' : 'failure');
+            },
+            error: function (error) {
+                resultMessage.textContent = "An error occurred while removing the employee.";
+                resultMessage.classList.remove('hidden');
+                resultMessage.classList.add('failure');
+            }
+        });
+    }
+</script>
+
+<style>
+    .popup-container-employee {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .update-employee-container.hidden {
+            display: none;
+        }
+
+    .popup-content-employee {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 50%;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .close-button:hover {
+        color: #ff0000;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .success {
+        color: green;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .failure {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>
