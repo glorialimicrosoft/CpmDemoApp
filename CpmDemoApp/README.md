@@ -66,7 +66,7 @@ At this point, the SDKs are not publicly available. Please contact Gloria Li (ge
     - Search for your package and click **"Install"**.
 
 3. Verify Installation:
- - Check the **"Dependencies"** node in Solution Explorer to confirm that the package is listed.
+    - Check the **"Dependencies"** node in Solution Explorer to confirm that the package is listed.
 
 
 ## Event Grid Setup
