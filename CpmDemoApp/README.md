@@ -60,7 +60,7 @@ At this point, the SDKs are not publicly available. Please contact Gloria Li (ge
 
 2. Install the Package:
     - Right-click on your project in Solution Explorer.
-    - Select **"Manage NuGet Packages…"**.
+    - Select **"Manage NuGet Packagesâ€¦"**.
     - Switch to the **"Browse"** tab.
     - Use the drop-down menu at the top right to select your local source (e.g., `LocalPackages`).
     - Search for your package and click **"Install"**.
@@ -98,7 +98,7 @@ To receive notification messages and message analysis:
      *(The build process copies the client app artifacts to the `wwwroot` directory of the ASP.NET Web App, ensuring seamless integration.)*
 
 2. **Start the Application**:
-   - Run the `CpmDemoApp` solution to launch the application.
+   - Run the `CpmDemoApp` solution in Visual Studio to launch the application.
 
 ## Additional Notes
 - Ensure all configurations are accurately updated before running the application.
