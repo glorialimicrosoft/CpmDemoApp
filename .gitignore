@@ -369,3 +369,4 @@ CpmDemoApp/wwwroot/logo192.png
 CpmDemoApp/wwwroot/index.html
 CpmDemoApp/wwwroot/asset-manifest.json
 CpmDemoApp/ClientApp/src/config.js
+/CpmDemoApp/appsettings.json

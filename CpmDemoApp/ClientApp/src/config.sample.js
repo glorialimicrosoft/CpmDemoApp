@@ -1,8 +1,5 @@
 export const endpointUrl = ""
-
-export const userAccessToken = "";
 export const channelId = "";
-
 export const connectionString = ""
 export const agents = [
     { name: 'Sarah', id: "" },

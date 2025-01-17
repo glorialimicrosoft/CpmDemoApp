@@ -1,14 +1,78 @@
+# README: CpmDemoApp
 
+## Introduction
+The CpmDemoApp is a demo application designed to showcase the threaded conversation functionalities and is consisted of two core components:
 
-## Configurations 
+1. **Main ASP.NET Web App**
+   - Built using ASP.NET.
+   - Includes controllers, models, views, and various helper classes.
+   - Hosts the **Admin Portal experience** and orchestrates the entire flow.
+   - Utilizes the .NET SDK to facilitate the Admin Portal functionalities.
 
-- In `Data.cs` file, you can add the agent mris in the property `AgentLists`.
-- Rename `appsettings.sample.json` to `appsettings.json` and update the required configurations.
+2. **Client App**
+   - Located at `CpmDemoApp\ClientApp`.
+   - Implements the **Agent Portal experience** in JavaScript.
+   - Utilizes the JavaScript SDK to facilitate the Agent Portal functionalities.
 
-- Rename `config.sample.js` to `config.js` in ClientApp\src and update the values in the file to match your Azure Communication Services configuration.
+## Prerequisites
+To get started, ensure the following requirements are met:
 
-- Run the following command to build the client application:
-    -  'npm run install'
-    -  'npm run build'
+- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount).
+- [.NET SDK 7.0 or later](https://dotnet.microsoft.com/download).
+- An Azure Communication Services resource. For details, see [Create and manage Communication Services resources](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource).
+- A WhatsApp Channel under Azure Communication Services. For details, see [Register WhatsApp business account](https://learn.microsoft.com/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account).
+- Enable Message Analysis for the WhatsApp Channel. For details, see [Enable Message Analysis with Azure OpenAI](https://learn.microsoft.com/azure/communication-services/quickstarts/advanced-messaging/message-analysis/message-analysis-with-azure-openai-quickstart).
+- Generate 5 MRIs for the ACS resource to represent agent identities. See [Create an identity](https://learn.microsoft.com/azure/communication-services/quickstarts/identity/access-tokens?tabs=windows&pivots=platform-azcli#create-an-identity).
 
-- Run CpmDemoApp to start the application
+## Configuration Setup
+
+### Main ASP.NET Web App
+1. Rename `appsettings.sample.json` to `appsettings.json` in the root folder.
+2. Update the following configurations in `appsettings.json`:
+   - Connection string
+   - Channel registration ID
+
+   *(Both can be found in the Azure Portal under your ACS resource.)*
+3. Open `CpmDemoApp\Util\Data.cs` and update the `AgentLists` property with the agent MRIs.
+
+### Client App
+1. Rename `config.sample.js` to `config.js` in `CpmDemoApp\ClientApp\src`.
+2. Update the following configurations in `config.js`:
+   - `endpointUrl`, `channelId`, and `connectionString`
+   *(Again these values are available in the Azure Portal under your ACS resource.)*
+   - Add the agent MRI list in the same order as defined in `Data.cs`.
+
+## Event Grid Setup
+To receive notification messages and message analysis:
+
+1. **Set up Event Grid Subscription**:
+   - Subscribe to `advancedmessagereceived` and `advancedmessageanalysiscompleted` events.
+   - Choose **Web Hook** as the endpoint type.
+   - Use the webhook endpoint URL:
+     - For deployed web apps: `https://yourapp.azurewebsites.net/webhook`.
+     - For local testing: Use an ngrok URL (e.g., `https://your-ngrok-url/webhook`).
+   -For details on how to subscribe to Event Grid, see [Subscribe to Azure Communication Services events](https://learn.microsoft.com/azure/communication-services/quickstarts/events/subscribe-to-events?pivots=platform-azp) 
+
+2. **Local Testing with ngrok**:
+   - Download and configure ngrok to expose your local host.
+   - Note down the ngrok-generated public URL.
+
+3. **Deploy the Web App**:
+   - Follow the [Quickstart: Publish an ASP.NET web app](https://learn.microsoft.com/en-us/visualstudio/deployment/quickstart-deploy-aspnet-web-app?view=vs-2022&tabs=azure).
+
+## Running the App
+
+1. **Build the Client Application**:
+   - Navigate to `CpmDemoApp\ClientApp` and run:
+     ```
+     npm install
+     npm run build
+     ```
+     *(The build process copies the client app artifacts to the `wwwroot` directory of the ASP.NET Web App, ensuring seamless integration.)*
+
+2. **Start the Application**:
+   - Run the `CpmDemoApp` solution to launch the application.
+
+## Additional Notes
+- Ensure all configurations are accurately updated before running the application.
+- For further assistance, reach out to the Gloria Li (gelli).
