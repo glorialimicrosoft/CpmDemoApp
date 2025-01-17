@@ -42,6 +42,33 @@ To get started, ensure the following requirements are met:
    *(Again these values are available in the Azure Portal under your ACS resource.)*
    - Add the agent MRI list in the same order as defined in `Data.cs`.
 
+
+## SDKs Setup
+At this point, the SDKs are not publicly available. Please contact Gloria Li (gelli) to obtain the local binaries. Once you have them, follow the instructions below to integrate them:
+
+### JavaScript SDK
+1. Place the package folder under CpmDemoApp\ClientApp.
+   - The folder structure should look like CpmDemoApp\ClientApp\package, containing the JavaScript binaries
+
+### .NET SDK:
+1. Set Up a Local NuGet Source:
+    - Go to **Tools > Options** in Visual Studio.
+    - Navigate to **NuGet Package Manager > Package Sources**.
+    - Click the **"+"** button to add a new source.
+        - **Name:** Provide a name for your local source (e.g., `LocalPackages`).
+        - **Source:** Browse to the folder containing your `.nupkg` file.
+
+2. Install the Package:
+    - Right-click on your project in Solution Explorer.
+    - Select **"Manage NuGet Packages…"**.
+    - Switch to the **"Browse"** tab.
+    - Use the drop-down menu at the top right to select your local source (e.g., `LocalPackages`).
+    - Search for your package and click **"Install"**.
+
+3. Verify Installation:
+ - Check the **"Dependencies"** node in Solution Explorer to confirm that the package is listed.
+
+
 ## Event Grid Setup
 To receive notification messages and message analysis:
 

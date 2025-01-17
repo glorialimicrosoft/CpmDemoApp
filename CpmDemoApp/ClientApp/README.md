@@ -1,5 +1,5 @@
-- Rename `config.sample.js` to `config.js` and update the values in the file to match your Azure Communication Services configuration.
-
-- Run the following command to start the application:
-    -  'npm run install'
-    -  'npm run start'
+1. Rename `config.sample.js` to `config.js` in `CpmDemoApp\ClientApp\src`.
+2. Update the following configurations in `config.js`:
+   - `endpointUrl`, `channelId`, and `connectionString`
+   *(Again these values are available in the Azure Portal under your ACS resource.)*
+   - Add the agent MRI list in the same order as defined in `Data.cs`.
