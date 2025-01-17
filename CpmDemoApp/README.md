@@ -78,7 +78,7 @@ To receive notification messages and message analysis:
    - Use the webhook endpoint URL:
      - For deployed web apps: `https://yourapp.azurewebsites.net/webhook`.
      - For local testing: Use an ngrok URL (e.g., `https://your-ngrok-url/webhook`).
-   -For details on how to subscribe to Event Grid, see [Subscribe to Azure Communication Services events](https://learn.microsoft.com/azure/communication-services/quickstarts/events/subscribe-to-events?pivots=platform-azp) 
+     - For further details on how to subscribe to Event Grid, see [Subscribe to Azure Communication Services events](https://learn.microsoft.com/azure/communication-services/quickstarts/events/subscribe-to-events?pivots=platform-azp) 
 
 2. **Local Testing with ngrok**:
    - Download and configure ngrok to expose your local host.
